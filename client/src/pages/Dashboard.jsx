@@ -12,38 +12,47 @@ function Dashboard() {
     category: 'General',
   });
 
-  const fetchInvoices = async () => {
-    try {
-      const res = await axios.get('http://localhost:5000/api/invoices');
-      setInvoices(res.data);
-    } catch (err) {
-      console.log('Error fetching invoices:', err);
-    }
-  };
+ const fetchInvoices = async () => {
+  try {
+    const token = localStorage.getItem('token');
+    const res = await axios.get('https://smartledger-j9ol.onrender.com/api/invoices', {
+      headers: { Authorization: `Bearer ${token}` },
+    });
+    setInvoices(res.data);
+  } catch (err) {
+    console.log('Error fetching invoices:', err);
+  }
+};
 
   useEffect(() => {
     fetchInvoices();
   }, []);
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    try {
-      await axios.post('http://localhost:5000/api/invoices', formData);
-      setFormData({ vendorName: '', amount: '', category: 'General' });
-      fetchInvoices();
-    } catch (err) {
-      console.log('Error adding invoice:', err);
-    }
-  };
+const handleSubmit = async (e) => {
+  e.preventDefault();
+  try {
+    const token = localStorage.getItem('token');
+    await axios.post('https://smartledger-j9ol.onrender.com/api/invoices', formData, {
+      headers: { Authorization: `Bearer ${token}` },
+    });
+    setFormData({ vendorName: '', amount: '', category: 'General' });
+    fetchInvoices();
+  } catch (err) {
+    console.log('Error adding invoice:', err);
+  }
+};
 
   const handleDelete = async (id) => {
-    try {
-      await axios.delete(`https://smartledger-j9ol.onrender.com/api/invoices/${id}`);
-      fetchInvoices();
-    } catch (err) {
-      console.log('Error deleting invoice:', err);
-    }
-  };
+  try {
+    const token = localStorage.getItem('token');
+    await axios.delete(`https://smartledger-j9ol.onrender.com/api/invoices/${id}`, {
+      headers: { Authorization: `Bearer ${token}` },
+    });
+    fetchInvoices();
+  } catch (err) {
+    console.log('Error deleting invoice:', err);
+  }
+};
 
   const handleLogout = () => {
     localStorage.removeItem('token');
