@@ -38,7 +38,7 @@ function Dashboard() {
 
   const handleDelete = async (id) => {
     try {
-      await axios.delete(`http://localhost:5000/api/invoices/${id}`);
+      await axios.delete(`https://smartledger-j9ol.onrender.com/api/invoices/${id}`);
       fetchInvoices();
     } catch (err) {
       console.log('Error deleting invoice:', err);
