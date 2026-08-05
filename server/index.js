@@ -5,6 +5,7 @@ const express = require('express');
 const cors = require('cors');
 const dotenv = require('dotenv');
 const invoiceRoutes = require('./routes/invoiceRoutes');
+const customerRoutes = require('./routes/customerRoutes');
 const mongoose = require('mongoose');
 const authRoutes = require('./routes/authRoutes');
 
@@ -22,6 +23,7 @@ mongoose.connect(process.env.MONGO_URI)
   .catch((err) => console.log('MongoDB connection error:', err));
 
 app.use('/api/invoices', invoiceRoutes);
+app.use('/api/customers', customerRoutes);
 app.use('/api/auth', authRoutes);
 app.get('/', (req, res) => {
   res.send('Backend is running!');
